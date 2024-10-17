@@ -23,19 +23,18 @@ Future<void> sendOTP(String? number) async{
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            textformField(),
-            SizedBox(height: 20,),
-            button(),
-          ],
+    return  Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(height: 250,),
+        Padding(
+          padding: const EdgeInsets.all(30.0),
+          child: textformField(),
         ),
-      ),
+        SizedBox(height: 20,),
+        button(),
+      ],
     );
   }
 
