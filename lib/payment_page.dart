@@ -17,18 +17,19 @@ class _PaymentPageState extends State<PaymentPage> {
 try{
   paymentIntent =
   await paymentService.createPayment('1', "INR");
-
-  await Stripe.instance.initPaymentSheet(paymentSheetParameters:SetupPaymentSheetParameters(
+print("paymentIntent!['customer'] ${paymentIntent!['customer']}");
+  await Stripe.instance.initPaymentSheet(
+    paymentSheetParameters:SetupPaymentSheetParameters(
     paymentIntentClientSecret: paymentIntent!['client_secret'],
-
+      merchantDisplayName: 'AGM',
+    customFlow: false,
+    customerId: paymentIntent!['customer'],
     googlePay: const PaymentSheetGooglePay(
       testEnv: true,
         currencyCode: 'INR',
         merchantCountryCode: 'IN'),
-    merchantDisplayName: 'AGM',
 
-
-  ),
+   ),
 
   );
   displayPaymentSheet();

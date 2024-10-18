@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:webapp_2024/AppConstant.dart';
 import 'package:webapp_2024/payment_page.dart';
@@ -11,10 +12,12 @@ import 'SignIn.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Stripe.publishableKey = AppConstant.publishkey;
-  Stripe.merchantIdentifier = 'merchant.flutter.stripe.test';
-  Stripe.urlScheme = 'flutterstripe';
-  // await Stripe.instance.applySettings();
+  await dotenv.load(fileName: '.env');
+  Stripe.publishableKey = dotenv.env['PUBLISH_KEY']!;
+  await Stripe.instance.applySettings();
+  // Stripe.merchantIdentifier = 'merchant.flutter.stripe.test';
+  // Stripe.urlScheme = 'flutterstripe';
+
   await Firebase.initializeApp(
     // name: '[DEFAULT]',
     // options: const FirebaseOptions(apiKey: 'AIzaSyBpmN4JFbTHHZWwqAkw77FCV9Z-YUmGi3U',
