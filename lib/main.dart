@@ -17,6 +17,8 @@ Future<void> main() async {
   await Stripe.instance.applySettings();
   // Stripe.merchantIdentifier = 'merchant.flutter.stripe.test';
   // Stripe.urlScheme = 'flutterstripe';
+  const isReleaseMode = bool.fromEnvironment('dart.vm.product');
+  print('isReleaseMode $isReleaseMode');
 
   await Firebase.initializeApp(
     // name: '[DEFAULT]',
