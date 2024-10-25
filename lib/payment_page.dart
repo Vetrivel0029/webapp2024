@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:webapp_2024/payment_service.dart';
 
 class PaymentPage extends StatefulWidget {
@@ -12,6 +13,31 @@ class PaymentPage extends StatefulWidget {
 class _PaymentPageState extends State<PaymentPage> {
   Map<String, dynamic>? paymentIntent;
   PaymentService paymentService =PaymentService();
+  final LocalAuthentication auth = LocalAuthentication();
+   bool? canAuthenticate;
+
+  Future<bool> lockPattern() async{
+    // final res = await auth.canCheckBiometrics;
+    //
+    // setState(() {
+    //   canAuthenticate = res;
+    // });
+
+
+     final res = await auth.authenticate(
+        options: const AuthenticationOptions(
+          biometricOnly: false,
+          stickyAuth: true
+        ),
+        localizedReason:"Please enter the valid pattern");
+    print("canCheckBiometrics $res");
+    setState(() {
+      canAuthenticate = res;
+    });
+     canAuthenticate = res;
+    return res;
+  }
+
 
   Future<void> makePay()async{
 try{
@@ -52,17 +78,28 @@ print("paymentIntent!['customer'] ${paymentIntent!['customer']}");
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    canAuthenticate =false;
+    print("canCheckBiometrics $canAuthenticate");
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         SizedBox(height: 250,),
         Center(
-          child: ElevatedButton(onPressed: (){
-            setState(() {
-              makePay();
-            });
+          child: ElevatedButton(onPressed: () {
+            makePay();
 
-          }, child: Text("Click")),
+          }, child: Text("Pay")),
+        ),
+        Center(
+          child: ElevatedButton(onPressed: (){
+            lockPattern();
+          }, child: Icon(canAuthenticate! == false ?Icons.lock: Icons.lock_open_rounded)),
         )
       ],
     );
